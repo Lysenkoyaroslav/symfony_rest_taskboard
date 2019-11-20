@@ -39,4 +39,32 @@ class UsersController extends AbstractFOSRestController
         }
         return $this->handleView($this->view($form->getErrors()));
     }
+
+    /**
+     *Lists all Users.
+     *@Rest\Get("/users")
+     *
+     *@return Response
+     */
+    public function getUsersAction()
+    {
+        $repository=$this->getDoctrine()->getRepository(Users::class);
+        $users=$repository->findall();
+        return$this->handleView($this->view($users));
+
+    }
+
+    /**
+     * Lists one User by id
+     * @Rest\Get("/users/{id}")
+     *
+     * @return Response
+     *
+     */
+    public function getUserByIdAction($id)
+    {
+        $repository=$this->getDoctrine()->getRepository(Users::class);
+        $user=$repository->find($id);
+        return $this->handleView($this->view($user));
+    }
 }
