@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\Users;
 use App\Form\UserType;
 use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
@@ -21,7 +22,7 @@ class UsersController extends AbstractFOSRestController
 
     /**
      * Create Users.
-     *@Rest\Post("/signup")
+     * @Rest\Post("/signup")
      *
      * @return Response
      */
@@ -42,15 +43,15 @@ class UsersController extends AbstractFOSRestController
 
     /**
      *Lists all Users.
-     *@Rest\Get("/users")
+     * @Rest\Get("/users")
      *
-     *@return Response
+     * @return Response
      */
     public function getUsersAction()
     {
-        $repository=$this->getDoctrine()->getRepository(Users::class);
-        $users=$repository->findall();
-        return$this->handleView($this->view($users));
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $users = $repository->findall();
+        return $this->handleView($this->view($users));
 
     }
 
@@ -63,8 +64,8 @@ class UsersController extends AbstractFOSRestController
      */
     public function getUserByIdAction($id)
     {
-        $repository=$this->getDoctrine()->getRepository(Users::class);
-        $user=$repository->find($id);
+        $repository = $this->getDoctrine()->getRepository(Users::class);
+        $user = $repository->find($id);
         return $this->handleView($this->view($user));
     }
 }
