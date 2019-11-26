@@ -2,11 +2,10 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Service\AuthControllerInterface;
+
 use App\Entity\Users;
 use App\Form\UserType;
-use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,11 +16,11 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 /**
  * @Route("/api", name="index")
  */
-class UsersController extends AbstractFOSRestController
+class UsersController extends AbstractFOSRestController implements AuthControllerInterface
 {
 
     /**
-     * Create Users.
+     * Creates Users.
      * @Rest\Post("/signup")
      *
      * @return Response
