@@ -6,9 +6,6 @@ namespace App\EventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use App\Service\AuthControllerInterface;
 use App\Controller\TokenVerificator;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
-
 
 class TokenListener
 {
@@ -36,14 +33,14 @@ class TokenListener
         if ($controllerInstance instanceof AuthControllerInterface) {
 
             $apiToken = $request->headers->get('apiToken');
-            $apiToken = $this->tokenVerificator->tokenVerification($apiToken);
 
-            if (empty($apiToken)) {
-                throw new HttpException(401, 'You need to signin application to access this endpoint');
-            }
+            $tokenVerification = $this->tokenVerificator->tokenVerification($apiToken);
+
+            return $tokenVerification;
 
         }
 
+        return true;
     }
 
 

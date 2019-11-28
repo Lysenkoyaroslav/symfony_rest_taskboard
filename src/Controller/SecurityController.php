@@ -5,7 +5,6 @@ namespace App\Controller;
 
 use App\Service\TokenGenerator;
 use App\Entity\Users;
-
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

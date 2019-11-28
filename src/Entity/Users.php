@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,6 +42,23 @@ class Users
      * @ORM\Column(type="string", length=255, nullable=true, unique=true)
      */
     private $apiToken;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Roles", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $roles;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Dashboard", mappedBy="users")
+     */
+    private $dashboards;
+
+    public function __construct()
+    {
+        $this->dashboards = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -93,4 +112,45 @@ class Users
 
         return $this;
     }
+
+    public function getRoles(): ?Roles
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(?Roles $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Dashboard[]
+     */
+    public function getDashboards(): Collection
+    {
+        return $this->dashboards;
+    }
+
+    public function addDashboard(Dashboard $dashboard): self
+    {
+        if (!$this->dashboards->contains($dashboard)) {
+            $this->dashboards[] = $dashboard;
+            $dashboard->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDashboard(Dashboard $dashboard): self
+    {
+        if ($this->dashboards->contains($dashboard)) {
+            $this->dashboards->removeElement($dashboard);
+            $dashboard->removeUser($this);
+        }
+
+        return $this;
+    }
+
 }

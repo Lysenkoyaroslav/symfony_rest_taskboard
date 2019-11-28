@@ -30,3 +30,8 @@ services:
       tags:
             - { name: kernel.event_listener, event: kernel.controller }
 
+    App\EventListener\AdminListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+
+

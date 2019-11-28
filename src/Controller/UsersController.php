@@ -3,21 +3,24 @@
 namespace App\Controller;
 
 use App\Service\AuthControllerInterface;
-
 use App\Entity\Users;
 use App\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-
 
 /**
  * @Route("/api", name="index")
  */
 class UsersController extends AbstractFOSRestController implements AuthControllerInterface
 {
+    public function getCurrentUser($apiToken)
+    {
+
+    }
 
     /**
      * Creates Users.
@@ -28,6 +31,7 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
     public function postUserAction(Request $request)
     {
         $user = new Users();
+
         $form = $this->createForm(UserType::class, $user);
         $data = json_decode($request->getContent(), true);
         $form->submit($data);
@@ -65,6 +69,13 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
     {
         $repository = $this->getDoctrine()->getRepository(Users::class);
         $user = $repository->find($id);
+
+        if (empty($user)) {
+            throw new NotFoundHttpException();
+        }
+
         return $this->handleView($this->view($user));
     }
+
+
 }
