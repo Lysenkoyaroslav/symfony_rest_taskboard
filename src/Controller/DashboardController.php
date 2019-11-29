@@ -47,11 +47,11 @@ class DashboardController extends AbstractFOSRestController
     }
 
     /**
-     * Replaces Dashboard resource
+     * Changes Dashboard content
      * @Rest\Put("/dashboard/{id}")
      */
 
-    public function putDashboard($id, Request $request)
+    public function changeDashboardContent($id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Dashboard::class);
         $dashboard = $repository->find($id);

@@ -47,11 +47,11 @@ class ColumnController extends AbstractFOSRestController
     }
 
     /**
-     * Replaces Column resource
+     * Changes Column name
      * @Rest\Put("/column/{id}")
      */
 
-    public function putColumn($id, Request $request)
+    public function changeColumn($id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Columns::class);
         $column = $repository->find($id);

@@ -7,6 +7,7 @@ use App\Entity\Users;
 use App\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -65,13 +66,23 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
      * @return Response
      *
      */
-    public function getUserByIdAction($id)
+    public function getUserByIdAction($id, Request $request)
     {
+        $response = new Response();
+        $apiToken = $request->headers->get('apiToken');
+
         $repository = $this->getDoctrine()->getRepository(Users::class);
+        $currentUser = $repository->findOneBy(['apiToken' => $apiToken]);
         $user = $repository->find($id);
 
         if (empty($user)) {
             throw new NotFoundHttpException();
+        }
+
+        if ($currentUser !== $user) {
+            return $response->setContent(
+                'Access denied!Only user, who created this account able to access this endpoint'
+            );
         }
 
         return $this->handleView($this->view($user));

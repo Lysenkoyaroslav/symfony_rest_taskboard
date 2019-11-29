@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,16 @@ class Columns
      * @ORM\ManyToOne(targetEntity="App\Entity\Dashboard", inversedBy="columns")
      */
     private $dashboard;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tasks", mappedBy="columns")
+     */
+    private $tasks;
+
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +63,37 @@ class Columns
     public function setDashboard(?Dashboard $dashboard): self
     {
         $this->dashboard = $dashboard;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tasks[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Tasks $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setColumns($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Tasks $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getColumns() === $this) {
+                $task->setColumns(null);
+            }
+        }
 
         return $this;
     }
