@@ -18,7 +18,14 @@ class TokenGenerator
 
         $now = date("Y-m-d H:i:s");
         $strToken = $user->getId() . $now;
-        $token = hash('md5', $strToken);
+        $token = hash('sha512', $strToken);
+
+        return $token;
+    }
+
+    public function generateTemporaryToken()
+    {
+        $token = bin2hex(random_bytes(16));
 
         return $token;
     }

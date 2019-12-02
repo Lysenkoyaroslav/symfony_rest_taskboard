@@ -18,10 +18,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
  */
 class UsersController extends AbstractFOSRestController implements AuthControllerInterface
 {
-    public function getCurrentUser($apiToken)
-    {
-
-    }
 
     /**
      * Creates Users.

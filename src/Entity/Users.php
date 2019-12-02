@@ -45,14 +45,28 @@ class Users
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Roles", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer", name="roles_id", options={"unsigned":true, "default":0})
      */
-    private $roles;
+    private $roles=0;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Dashboard", mappedBy="users")
+     *
      */
     private $dashboards;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Status", inversedBy="users")
+     *
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $temporaryToken;
+
 
     public function __construct()
     {
@@ -152,5 +166,30 @@ class Users
 
         return $this;
     }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTemporaryToken(): ?string
+    {
+        return $this->temporaryToken;
+    }
+
+    public function setTemporaryToken(?string $temporaryToken): self
+    {
+        $this->temporaryToken = $temporaryToken;
+
+        return $this;
+    }
+
 
 }
