@@ -28,9 +28,13 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
     public function postUserAction(Request $request)
     {
         $user = new Users();
+        $response = new Response();
 
         $form = $this->createForm(UserType::class, $user);
         $data = json_decode($request->getContent(), true);
+        if (!isset($data['userName']) || !isset($data['password']) || !isset($data['email'])) {
+            return $response->setContent('Fill in required fields: userName, password, email!');
+        }
         $form->submit($data);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();

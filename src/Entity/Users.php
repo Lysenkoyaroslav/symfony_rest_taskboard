@@ -22,19 +22,19 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
      */
     private $userName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
      */
     private $email;
 

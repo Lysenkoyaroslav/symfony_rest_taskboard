@@ -1,0 +1,12 @@
+class_name: ApiTester
+modules:
+  enabled:
+    - Symfony:
+        app_path: 'src'
+        environment: 'test'
+    - REST:
+        url: 'https://localhost/'
+        depends: Symfony
+    - Doctrine2:
+        depends: Symfony
+        cleanup: true
