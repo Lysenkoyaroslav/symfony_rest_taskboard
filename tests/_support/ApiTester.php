@@ -45,6 +45,22 @@ class ApiTester extends \Codeception\Actor
         $I->haveHttpHeader('apiToken', $apiToken);
     }
 
+    public static function createUserNoToken(ApiTester $I)
+    {
+        $I->haveInRepository(Users::class, array(
+            'userName' => 'Davert',
+            'password' => '12345',
+            'email' => 'test@mail.com',
+            'apiToken' => null,
+            'roles' => array(
+                'roles' => 'Admin',
+            ),
+            'status' => array(
+                'name' => 'Verified'
+            ),
+            'temporaryToken' => null));
+    }
+
     public static function createTask(ApiTester $I)
     {
         $I->haveInRepository(Tasks::class, array(
