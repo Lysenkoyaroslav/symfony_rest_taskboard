@@ -5,7 +5,6 @@ namespace App\Tests\api;
 
 
 use App\Entity\Columns;
-
 use App\Tests\ApiTester;
 
 class ColumnsControllerCest
