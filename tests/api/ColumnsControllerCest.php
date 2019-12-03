@@ -61,7 +61,6 @@ class ColumnsControllerCest
 
         $data = [
             'name' => 'newTest',
-
         ];
 
         $json = json_encode($data);
@@ -75,6 +74,21 @@ class ColumnsControllerCest
         $I->seeResponseContains('{"status":"ok"}');
     }
 
+    public function changeColumnNonexistentIdViaAPI(ApiTester $I)
+    {
+        ApiTester::createColumn($I);
+
+        $data = [
+            'name' => 'newTest',
+        ];
+
+        $json = json_encode($data);
+
+        $id = -1;
+        $I->sendPUT('/column/' . $id, $json);
+        $I->seeResponseCodeIs(404);
+    }
+
 
     public function deleteColumnViaAPI(ApiTester $I)
     {
@@ -85,6 +99,16 @@ class ColumnsControllerCest
         $I->sendDELETE('/column/' . $id);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('Column removed!');
+
+    }
+
+    public function deleteColumnNonexistentIdViaAPI(ApiTester $I)
+    {
+        ApiTester::createColumn($I);
+
+        $id = -1;
+        $I->sendDELETE('/column/' . $id);
+        $I->seeResponseCodeIs(404);
 
     }
 
