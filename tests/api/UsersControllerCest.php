@@ -23,6 +23,17 @@ class UsersControllerCest
 
     }
 
+    public function getUserByIdNonexistentIdViaAPI(ApiTester $I)
+    {
+
+        ApiTester::createAuthUser($I);
+
+        $id = -1;
+        $I->sendGET('/api/users/' . $id);
+        $I->seeResponseCodeIs(404);
+
+    }
+
     public function getUsersViaAPI(ApiTester $I)
     {
         ApiTester::createAuthUser($I);
