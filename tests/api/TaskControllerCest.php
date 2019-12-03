@@ -75,6 +75,22 @@ class TaskControllerCest
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK); // 200
         $I->seeResponseContains('{"status":"ok"}');
     }
+    public function changeTaskNonexistentIdViaAPI(ApiTester $I)
+    {
+        ApiTester::createTask($I);
+
+        $data = [
+            'name' => 'newTest',
+            'description' => 'Some  new text',
+        ];
+
+        $json = json_encode($data);
+
+        $id = -1;
+
+        $I->sendPUT('/task/' . $id, $json);
+        $I->seeResponseCodeIs(404);
+    }
 
     public function deleteTaskViaAPI(ApiTester $I)
     {
@@ -85,6 +101,16 @@ class TaskControllerCest
         $I->sendDELETE('/task/' . $id);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContains('Task removed!');
+
+    }
+
+    public function deleteTaskNonexistentIdViaAPI(ApiTester $I)
+    {
+        ApiTester::createTask($I);
+
+        $id = -1;
+        $I->sendDELETE('/task/' . $id);
+        $I->seeResponseCodeIs(404);
 
     }
 
