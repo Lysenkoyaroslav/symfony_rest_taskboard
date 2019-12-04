@@ -7,3 +7,12 @@ modules:
     enabled:
         - Asserts
         - \App\Tests\Helper\Unit
+        - Symfony:
+              app_path: 'src'
+              environment: 'test'
+        - REST:
+              url: 'https://localhost/'
+              depends: Symfony
+        - Doctrine2:
+              depends: Symfony
+              cleanup: true

@@ -1,6 +1,8 @@
 <?php
 namespace App\Tests;
 
+use App\Entity\Users;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -18,9 +20,17 @@ namespace App\Tests;
 */
 class UnitTester extends \Codeception\Actor
 {
-    use _generated\UnitTesterActions;
+    public static function createUser()
+    {
+       $user=new Users();
 
-   /**
-    * Define custom actions here
-    */
+       $user->setUserName('Davert');
+       $user->setPassword('12345');
+       $user->setEmail('davert@mail.com');
+       $user->setApiToken('149030joifqjd');
+
+       return $user;
+
+    }
+
 }
