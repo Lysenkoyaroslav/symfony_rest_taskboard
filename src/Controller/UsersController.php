@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Service\AuthControllerInterface;
 use App\Entity\Users;
 use App\Form\UserType;
+use App\Service\UserService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -18,6 +18,18 @@ use FOS\RestBundle\Controller\Annotations as Rest;
  */
 class UsersController extends AbstractFOSRestController implements AuthControllerInterface
 {
+
+
+    private $userService;
+
+    public function __construct(UserService $userService)
+
+    {
+
+        $this->userService = $userService;
+
+    }
+
 
     /**
      * Creates Users.
