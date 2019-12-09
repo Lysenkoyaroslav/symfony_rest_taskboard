@@ -4,6 +4,8 @@
 namespace App\Service;
 
 
+use App\Entity\Columns;
+use App\Entity\Tasks;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,48 +45,59 @@ class TaskService extends Command
             return $value;
         });
 
-        $data['taskName'] = $helper->ask($input, $output, $question);
+        $data['name'] = $helper->ask($input, $output, $question);
 
 
         $helper = $this->getHelper('question');
 
-        $question = new Question('Enter password: ');
-        $question->setHidden(true);
+        $question = new Question('Add some description: ');
         $question->setValidator(function ($value) {
             if (trim($value) == '') {
-                throw new \Exception('The password cannot be empty');
+                throw new \Exception('This field cannot be empty');
             }
 
             return $value;
         });
 
-        $data['password'] = $helper->ask($input, $output, $question);
-
+        $data['description'] = $helper->ask($input, $output, $question);
 
         $helper = $this->getHelper('question');
 
-        $question = new Question('Enter email: ');
-        $question->setNormalizer(function ($value) {
-
-            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                throw new \Exception('The email is not valid');
+        $question = new Question('Add to column[column name]: ');
+        $question->setValidator(function ($value) {
+            if (trim($value) == '') {
+                throw new \Exception('This field cannot be empty');
             }
 
             return $value;
         });
 
-        $data['email'] = $helper->ask($input, $output, $question);
+        $column = $helper->ask($input, $output, $question);
 
-        $task = new tasks();
+        $columnsRepository = $this->entityManager->getRepository(Columns::class);
+        $column = $columnsRepository->findOneBy(['name' => $column]);
 
-        $task->settaskName($data['taskName']);
-        $task->setPassword($data['password']);
-        $task->setEmail($data['email']);
+
+        if (empty($column)) {
+
+            $output->writeln('<error>Column not found!</error>');
+
+            return false;
+        }
+
+
+        $task = new Tasks();
+
+        $task->setName($data['name']);
+        $task->setDescription($data['description']);
+        $task->setColumns($column);
 
         $this->entityManager->persist($task);
         $this->entityManager->flush();
 
         $output->writeln('task created!');
+
+        return true;
     }
 
 
