@@ -57,8 +57,14 @@ class RegistrationController extends AbstractFOSRestController implements Status
             $em->persist($user);
             $em->flush();
 
+            $this->forward('App\Controller\PdfController::createPdf', [
+                'userName' => $user->getUserName(),
+                'email' => $user->getEmail()
+            ]);
+
             $response = $this->forward('App\Controller\MailerController::sendEmail', [
                 'temporaryToken' => $temporaryToken,
+                'userName' => $user->getUserName()
             ]);
             return $response;
         }

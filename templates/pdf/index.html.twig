@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title of the PDF</title>
+    </head>
+
+    <div class="client left">
+        <p class="name">User name:{{userName}}</p>
+        <p>Email: {{email}}</p>
+        <p>Due Date: {{nowDate}}</p>
+    </div>
+
+    <h1>Instruction</h1>
+    <h2>Summary</h2>
+
+    Content
+
+    <section>
+
+
+        <table>
+            <thead>
+            <tr>
+                <th>Command</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Command name</td>
+                <td>Some information</td>
+            </tr>
+            <tr>
+                <td>Command name</td>
+                <td>Some information</td>
+            </tr>
+            <tr>
+                <td>Command name</td>
+                <td>Some information</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</html>
+{% endblock %}
