@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Controller;
-
 
 use App\Service\AdminControllerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -22,11 +20,10 @@ class AdminController extends AbstractFOSRestController implements AdminControll
      * @return mixed
      *
      */
-    public function test()
+    public function test(): Response
     {
-
         $response = new Response();
+        
         return $response->setContent('You are admin!');
-
     }
 }
