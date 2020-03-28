@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -10,17 +9,14 @@ use Dompdf\Options;
 
 class PdfController extends AbstractFOSRestController
 {
-
-    public function createPdf($userName, $email)
+    public function createPdf(string $userName,string $email)
     {
         $date = new \DateTime('now');
         $nowDate = $date->format('Y-m-d');
-
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-
         $dompdf = new Dompdf($pdfOptions);
-
+        
         $html = $this->renderView('pdf/index.html.twig', [
             'title' => "Welcome to our PDF Test",
             'userName' => $userName,
@@ -28,28 +24,16 @@ class PdfController extends AbstractFOSRestController
             'nowDate' => $nowDate
         ]);
 
-
         $dompdf->loadHtml($html);
-
         $dompdf->setPaper('A4', 'portrait');
-
-
         $dompdf->render();
-
-
         $output = $dompdf->output();
-
-
         $publicDirectory = $this->get('kernel')->getProjectDir() . '/pdf';
-
         $pdfFilepath = $publicDirectory . '/' . $userName . '.pdf';
-
-
         file_put_contents($pdfFilepath, $output);
-
     }
 
-    public function deletePdf($pdfFilepath)
+    public function deletePdf(string $pdfFilepath)
     {
         unlink($pdfFilepath);
     }
