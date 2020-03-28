@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\EventListener;
 
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -9,16 +7,12 @@ use App\Controller\TokenVerificator;
 
 class TokenListener
 {
-
     protected $tokenVerificator;
-
 
     public function __construct(TokenVerificator $tokenVerificator)
     {
-
         $this->tokenVerificator = $tokenVerificator;
     }
-
 
     public function onKernelController(ControllerEvent $event)
     {
@@ -29,19 +23,13 @@ class TokenListener
             $controllerInstance = $controllerInstance[0];
         }
 
-
         if ($controllerInstance instanceof AuthControllerInterface) {
-
             $apiToken = $request->headers->get('apiToken');
-
             $tokenVerification = $this->tokenVerificator->tokenVerification($apiToken);
 
             return $tokenVerification;
-
         }
 
         return true;
     }
-
-
 }
