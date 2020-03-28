@@ -23,8 +23,8 @@ class DashboardController extends AbstractFOSRestController
     {
         $repository = $this->getDoctrine()->getRepository(Dashboard::class);
         $dashboard = $repository->findall();
+        
         return $this->handleView($this->view($dashboard));
-
     }
 
     /**
@@ -65,13 +65,12 @@ class DashboardController extends AbstractFOSRestController
         $form->submit($data);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_OK));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
-
-
     }
 
     /**
@@ -90,8 +89,10 @@ class DashboardController extends AbstractFOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($dashboard);
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_CREATED));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
     }
 
@@ -101,10 +102,9 @@ class DashboardController extends AbstractFOSRestController
      *
      * @return Response
      */
-    public function deleteDashboardAction($id)
+    public function deleteDashboardAction(int $id)
     {
         $response = new Response();
-
         $repository = $this->getDoctrine()->getRepository(Dashboard::class);
         $dashboard = $repository->find($id);
 
@@ -118,5 +118,4 @@ class DashboardController extends AbstractFOSRestController
 
         return $response->setContent('Dashboard removed!');
     }
-
 }
