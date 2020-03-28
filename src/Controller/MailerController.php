@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -8,17 +7,12 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\NamedAddress;
 
-
 class MailerController extends AbstractFOSRestController
 {
-
-
-    public function sendEmail(MailerInterface $mailer, $temporaryToken,$userName)
+    public function sendEmail(MailerInterface $mailer, string $temporaryToken, string $userName)
     {
         $publicDirectory = $this->get('kernel')->getProjectDir() . '/pdf';
-
         $pdfFilepath = $publicDirectory . '/' . $userName . '.pdf';
-
         $email = (new Email())
             ->from(new NamedAddress('mailtrap@example.com', 'Mailtrap'))
             ->to('newuser@example.com')
@@ -26,10 +20,7 @@ class MailerController extends AbstractFOSRestController
             ->html("your verify endpoint: GET <a href='http://127.0.0.1:8000/registration/$temporaryToken'>http://127.0.0.1:8000/registration/$temporaryToken</a>")
             ->attachFromPath($pdfFilepath, 'Welcome');
 
-
-
         $mailer->send($email);
-
         $this->forward('App\Controller\PdfController::deletePdf', [
             'pdfFilepath' => $pdfFilepath
         ]);
