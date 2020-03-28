@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Controller;
 
 use App\Service\TokenGenerator;
@@ -19,7 +17,6 @@ class SecurityController extends AbstractFOSRestController
     public function login(Request $request, TokenGenerator $tokenGenerator)
     {
         $response = new Response();
-
         $data = json_decode($request->getContent(), true);
 
         if (!isset($data['userName']) || !isset($data['password'])) {
@@ -34,14 +31,13 @@ class SecurityController extends AbstractFOSRestController
         );
 
         if (!$user) {
+            
             return $response->setContent('Access denied!');
         }
 
         $em = $this->getDoctrine()->getManager();
-
         $apiToken = $tokenGenerator->generateToken($user);
         $user->setApiToken($apiToken);
-
         $em->persist($user);
         $em->flush();
 
