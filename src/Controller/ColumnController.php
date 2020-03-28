@@ -34,7 +34,7 @@ class ColumnController extends AbstractFOSRestController
      * @return Response
      *
      */
-    public function getColumnByIdAction($id)
+    public function getColumnByIdAction(int $id)
     {
         $repository = $this->getDoctrine()->getRepository(Columns::class);
         $column = $repository->find($id);
@@ -50,8 +50,7 @@ class ColumnController extends AbstractFOSRestController
      * Changes Column name
      * @Rest\Put("/column/{id}")
      */
-
-    public function changeColumn($id, Request $request)
+    public function changeColumn(int $id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Columns::class);
         $column = $repository->find($id);
@@ -65,13 +64,12 @@ class ColumnController extends AbstractFOSRestController
         $form->submit($data);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_OK));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
-
-
     }
 
     /**
@@ -90,8 +88,10 @@ class ColumnController extends AbstractFOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($column);
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_CREATED));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
     }
 
@@ -101,10 +101,9 @@ class ColumnController extends AbstractFOSRestController
      *
      * @return Response
      */
-    public function deleteColumnAction($id)
+    public function deleteColumnAction(int $id)
     {
         $response = new Response();
-
         $repository = $this->getDoctrine()->getRepository(Columns::class);
         $column = $repository->find($id);
 
