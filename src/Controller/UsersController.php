@@ -18,18 +18,12 @@ use FOS\RestBundle\Controller\Annotations as Rest;
  */
 class UsersController extends AbstractFOSRestController implements AuthControllerInterface
 {
-
-
     private $userService;
 
     public function __construct(UserService $userService)
-
     {
-
         $this->userService = $userService;
-
     }
-
 
     /**
      * Creates Users.
@@ -41,19 +35,22 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
     {
         $user = new Users();
         $response = new Response();
-
         $form = $this->createForm(UserType::class, $user);
         $data = json_decode($request->getContent(), true);
+        
         if (!isset($data['userName']) || !isset($data['password']) || !isset($data['email'])) {
             return $response->setContent('Fill in required fields: userName, password, email!');
         }
+        
         $form->submit($data);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_CREATED));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
     }
 
@@ -68,7 +65,6 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
         $repository = $this->getDoctrine()->getRepository(Users::class);
         $users = $repository->findall();
         return $this->handleView($this->view($users));
-
     }
 
     /**
@@ -78,7 +74,7 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
      * @return Response
      *
      */
-    public function getUserByIdAction($id, Request $request)
+    public function getUserByIdAction(int $id, Request $request)
     {
         $response = new Response();
         $apiToken = $request->headers->get('apiToken');
@@ -99,6 +95,4 @@ class UsersController extends AbstractFOSRestController implements AuthControlle
 
         return $this->handleView($this->view($user));
     }
-
-
 }
