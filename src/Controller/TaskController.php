@@ -1,8 +1,5 @@
 <?php
-
-
 namespace App\Controller;
-
 
 use App\Entity\Columns;
 use App\Entity\Tasks;
@@ -28,9 +25,7 @@ class TaskController extends AbstractFOSRestController
         $repository = $this->getDoctrine()->getRepository(Tasks::class);
         $Task = $repository->findall();
         return $this->handleView($this->view($Task));
-
     }
-
 
     /**
      * Lists one Task by id
@@ -39,7 +34,7 @@ class TaskController extends AbstractFOSRestController
      * @return Response
      *
      */
-    public function getTaskByIdAction($id)
+    public function getTaskByIdAction(int $id)
     {
         $repository = $this->getDoctrine()->getRepository(Tasks::class);
         $task = $repository->find($id);
@@ -67,8 +62,10 @@ class TaskController extends AbstractFOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($task);
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_CREATED));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
     }
 
@@ -80,7 +77,6 @@ class TaskController extends AbstractFOSRestController
     {
         $tRepository = $this->getDoctrine()->getRepository(Tasks::class);
         $cRepository = $this->getDoctrine()->getRepository(Columns::class);
-
         $task = $tRepository->find($taskId);
         $column = $cRepository->find($columnId);
 
@@ -93,20 +89,17 @@ class TaskController extends AbstractFOSRestController
         }
 
         $task->setColumns($column);
-
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
         return $this->handleView($this->view($task));
-
     }
 
     /**
      * Changes Task content
      * @Rest\Put("/task/{id}")
      */
-
-    public function changeTaskContent($id, Request $request)
+    public function changeTaskContent(int $id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Tasks::class);
         $task = $repository->find($id);
@@ -120,13 +113,12 @@ class TaskController extends AbstractFOSRestController
         $form->submit($data);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             $em->flush();
+            
             return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_OK));
         }
+        
         return $this->handleView($this->view($form->getErrors()));
-
-
     }
 
     /**
@@ -135,10 +127,9 @@ class TaskController extends AbstractFOSRestController
      *
      * @return Response
      */
-    public function deleteTaskAction($id)
+    public function deleteTaskAction(int $id)
     {
         $response = new Response();
-
         $repository = $this->getDoctrine()->getRepository(Tasks::class);
         $task = $repository->find($id);
 
@@ -152,6 +143,4 @@ class TaskController extends AbstractFOSRestController
 
         return $response->setContent('Task removed!');
     }
-
-
 }
